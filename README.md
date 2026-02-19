@@ -2,7 +2,7 @@
 
 This repo is part of the [xale-db](https://github.com/axdelafuen/xale-db) project.
 
-This repository aims to provides a simple PoC implementation of the SSL/TLS protocol, written in `c++`.
+This is a simple PoC implementation of the SSL/TLS protocol, written in `c++`.
 
 ---
 
