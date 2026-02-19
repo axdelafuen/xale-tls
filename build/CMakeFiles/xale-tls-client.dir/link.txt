@@ -1,0 +1,1 @@
+/usr/bin/c++ -Wl,--dependency-file=CMakeFiles/xale-tls-client.dir/link.d "CMakeFiles/xale-tls-client.dir/example/client/main.cpp.o" -o xale-tls-client  libxale-tls-core.a

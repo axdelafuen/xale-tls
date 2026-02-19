@@ -1,0 +1,2 @@
+/usr/bin/ar qc libxale-tls-core.a "CMakeFiles/xale-tls-core.dir/src/debug.cpp.o"
+/usr/bin/ranlib libxale-tls-core.a
