@@ -11,111 +11,109 @@
 
 namespace Xale::Tests
 {
-    DECLARE_HKDF_TEST(extract_matches_hmac)
+    // RFC 5869 A.1 - Extract
+    DECLARE_HKDF_TEST(rfc5869_a1_extract)
     {
-        std::string salt = "xale";
-        std::string ikm = "xale123";
+        std::string expect = "077709362c2e32df0ddc3f0dc47bba6390b6c73bb50f9c3122ec844ad7c2b3e5";
+        auto salt = hexToBytes("000102030405060708090a0b0c");
+        auto ikm  = hexToBytes("0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b");
 
-        auto prk = Xale::Cryptography::HKDF::extract(
-            reinterpret_cast<const std::uint8_t*>(salt.data()), salt.size(),
-            reinterpret_cast<const std::uint8_t*>(ikm.data()), ikm.size());
+        auto prk = Xale::Cryptography::HKDF::extract(salt, ikm);
 
-        auto expected = Xale::Cryptography::HMAC_SHA256::mac(salt, ikm);
-
-        return prk == expected;
+        return bytesToHex(prk.data(), prk.size()) == expect;
     }
 
-    DECLARE_HKDF_TEST(extract_empty_salt)
+    // RFC 5869 A.1 - Expand
+    DECLARE_HKDF_TEST(rfc5869_a1_expand)
     {
-        std::string ikm = "xale123";
+        std::string expect = "3cb25f25faacd57a90434f64d0362f2a2d2d0a90cf1a5a4c5db02d56ecc4c5bf34007208d5b887185865";
+        auto prk  = hexToBytes("077709362c2e32df0ddc3f0dc47bba6390b6c73bb50f9c3122ec844ad7c2b3e5");
+        auto info = hexToBytes("f0f1f2f3f4f5f6f7f8f9");
 
-        auto prk = Xale::Cryptography::HKDF::extract(
-            nullptr, 0,
-            reinterpret_cast<const std::uint8_t*>(ikm.data()), ikm.size());
+        auto okm = Xale::Cryptography::HKDF::expand(prk, info, 42);
 
-        return prk.size() == Xale::Cryptography::HKDF::hashLen();
+        return bytesToHex(okm.data(), okm.size()) == expect;
     }
 
-    DECLARE_HKDF_TEST(extract_different_inputs)
+    // RFC 5869 A.2 - Extract (longer inputs)
+    DECLARE_HKDF_TEST(rfc5869_a2_extract)
     {
-        std::string salt = "xale";
-        std::string ikm1 = "xale123";
-        std::string ikm2 = "xale456";
+        std::string expect = "06a6b88c5853361a06104c9ceb35b45cef760014904671014a193f40c15fc244";
+        auto salt = hexToBytes(
+            "606162636465666768696a6b6c6d6e6f"
+            "707172737475767778797a7b7c7d7e7f"
+            "808182838485868788898a8b8c8d8e8f"
+            "909192939495969798999a9b9c9d9e9f"
+            "a0a1a2a3a4a5a6a7a8a9aaabacadaeaf");
+        auto ikm = hexToBytes(
+            "000102030405060708090a0b0c0d0e0f"
+            "101112131415161718191a1b1c1d1e1f"
+            "202122232425262728292a2b2c2d2e2f"
+            "303132333435363738393a3b3c3d3e3f"
+            "404142434445464748494a4b4c4d4e4f");
 
-        auto prk1 = Xale::Cryptography::HKDF::extract(
-            reinterpret_cast<const std::uint8_t*>(salt.data()), salt.size(),
-            reinterpret_cast<const std::uint8_t*>(ikm1.data()), ikm1.size());
+        auto prk = Xale::Cryptography::HKDF::extract(salt, ikm);
 
-        auto prk2 = Xale::Cryptography::HKDF::extract(
-            reinterpret_cast<const std::uint8_t*>(salt.data()), salt.size(),
-            reinterpret_cast<const std::uint8_t*>(ikm2.data()), ikm2.size());
-
-        return prk1 != prk2;
+        return bytesToHex(prk.data(), prk.size()) == expect;
     }
 
-    DECLARE_HKDF_TEST(expand_output_length)
+    // RFC 5869 A.2 - Expand (longer outputs)
+    DECLARE_HKDF_TEST(rfc5869_a2_expand)
     {
-        std::string salt = "xale";
-        std::string ikm = "xale123";
-        std::string info = "test-context";
+        std::string expect =
+            "b11e398dc80327a1c8e7f78c596a4934"
+            "4f012eda2d4efad8a050cc4c19afa97c"
+            "59045a99cac7827271cb41c65e590e09"
+            "da3275600c2f09b8367793a9aca3db71"
+            "cc30c58179ec3e87c14c01d5c1f3434f"
+            "1d87";
+        auto prk  = hexToBytes("06a6b88c5853361a06104c9ceb35b45cef760014904671014a193f40c15fc244");
+        auto info = hexToBytes(
+            "b0b1b2b3b4b5b6b7b8b9babbbcbdbebf"
+            "c0c1c2c3c4c5c6c7c8c9cacbcccdcecf"
+            "d0d1d2d3d4d5d6d7d8d9dadbdcdddedf"
+            "e0e1e2e3e4e5e6e7e8e9eaebecedeeef"
+            "f0f1f2f3f4f5f6f7f8f9fafbfcfdfeff");
 
-        auto prk = Xale::Cryptography::HKDF::extract(
-            reinterpret_cast<const std::uint8_t*>(salt.data()), salt.size(),
-            reinterpret_cast<const std::uint8_t*>(ikm.data()), ikm.size());
+        auto okm = Xale::Cryptography::HKDF::expand(prk, info, 82);
 
-        auto okm = Xale::Cryptography::HKDF::expand(
-            prk.data(), prk.size(),
-            reinterpret_cast<const std::uint8_t*>(info.data()), info.size(),
-            42);
-
-        return okm.size() == 42;
+        return bytesToHex(okm.data(), okm.size()) == expect;
     }
 
-    DECLARE_HKDF_TEST(expand_deterministic)
+    // RFC 5869 A.3 - Extract (zero-length salt)
+    DECLARE_HKDF_TEST(rfc5869_a3_extract)
     {
-        std::string salt = "xale";
-        std::string ikm = "xale123";
-        std::string info = "test-context";
+        std::string expect = "19ef24a32c717b167f33a91d6f648bdf96596776afdb6377ac434c1c293ccb04";
+        std::vector<std::uint8_t> salt;
+        auto ikm = hexToBytes("0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b");
 
-        auto prk = Xale::Cryptography::HKDF::extract(
-            reinterpret_cast<const std::uint8_t*>(salt.data()), salt.size(),
-            reinterpret_cast<const std::uint8_t*>(ikm.data()), ikm.size());
+        auto prk = Xale::Cryptography::HKDF::extract(salt, ikm);
 
-        auto okm1 = Xale::Cryptography::HKDF::expand(
-            prk.data(), prk.size(),
-            reinterpret_cast<const std::uint8_t*>(info.data()), info.size(),
-            64);
-
-        auto okm2 = Xale::Cryptography::HKDF::expand(
-            prk.data(), prk.size(),
-            reinterpret_cast<const std::uint8_t*>(info.data()), info.size(),
-            64);
-
-        return okm1 == okm2;
+        return bytesToHex(prk.data(), prk.size()) == expect;
     }
 
-    DECLARE_HKDF_TEST(expand_different_info)
+    // RFC 5869 A.3 - Expand (zero-length info)
+    DECLARE_HKDF_TEST(rfc5869_a3_expand)
     {
-        std::string salt = "xale";
-        std::string ikm = "xale123";
-        std::string info1 = "context-a";
-        std::string info2 = "context-b";
+        std::string expect = "8da4e775a563c18f715f802a063c5a31b8a11f5c5ee1879ec3454e5f3c738d2d9d201395faa4b61a96c8";
+        auto prk = hexToBytes("19ef24a32c717b167f33a91d6f648bdf96596776afdb6377ac434c1c293ccb04");
+        std::vector<std::uint8_t> info;
 
-        auto prk = Xale::Cryptography::HKDF::extract(
-            reinterpret_cast<const std::uint8_t*>(salt.data()), salt.size(),
-            reinterpret_cast<const std::uint8_t*>(ikm.data()), ikm.size());
+        auto okm = Xale::Cryptography::HKDF::expand(prk, info, 42);
 
-        auto okm1 = Xale::Cryptography::HKDF::expand(
-            prk.data(), prk.size(),
-            reinterpret_cast<const std::uint8_t*>(info1.data()), info1.size(),
-            32);
+        return bytesToHex(okm.data(), okm.size()) == expect;
+    }
 
-        auto okm2 = Xale::Cryptography::HKDF::expand(
-            prk.data(), prk.size(),
-            reinterpret_cast<const std::uint8_t*>(info2.data()), info2.size(),
-            32);
+    // RFC 5869 A.1 - Wrong expected value
+    DECLARE_HKDF_TEST(rfc5869_a1_extract_fail)
+    {
+        std::string expect = "077709362c2e32df0ddc3f0dc47bba6390b6c73bb50f9c3122ec844ad7c2b3e5";
+        auto salt = hexToBytes("000102030405060708090a0b0c");
+        auto ikm  = hexToBytes("0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0bFFFFFFFFFFFF");
 
-        return okm1 != okm2;
+        auto prk = Xale::Cryptography::HKDF::extract(salt, ikm);
+
+        return bytesToHex(prk.data(), prk.size()) != expect;
     }
 }
 
