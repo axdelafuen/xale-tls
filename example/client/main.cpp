@@ -1,3 +1,5 @@
+#include "Cryptography/SHA256.h"
+
 #include <string>
 #include <iostream>
 
