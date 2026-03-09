@@ -41,7 +41,7 @@ namespace Xale::Cryptography
         return rotr(x, 17) ^ rotr(x, 19) ^ (x >> 10);
     }
 
-    std::array<std::uint32_t, SHA256::stateSize> SHA256::initialState()
+    std::array<std::uint32_t, SHA256::_stateSize> SHA256::initialState()
     {
         return {
             0x6a09e667, 0xbb67ae85, 0x3c6ef372, 0xa54ff53a,
@@ -49,8 +49,8 @@ namespace Xale::Cryptography
         };
     }
 
-    std::array<std::uint32_t, SHA256::stateSize> SHA256::process(
-            const std::array<std::uint32_t, stateSize> state,
+    std::array<std::uint32_t, SHA256::_stateSize> SHA256::process(
+            const std::array<std::uint32_t, _stateSize> state,
             const std::uint8_t block[blockSize])
     {
         uint32_t W[64];
@@ -71,7 +71,7 @@ namespace Xale::Cryptography
 
         for (int i = 0; i < 64; ++i)
         {
-            uint32_t t1 = h + bigSigma1(e) + ch(e, f, g) + K[i] + W[i];
+            uint32_t t1 = h + bigSigma1(e) + ch(e, f, g) + _K[i] + W[i];
             uint32_t t2 = bigSigma0(a) + maj(a, b, c);
             h = g;
             g = f;
@@ -89,10 +89,10 @@ namespace Xale::Cryptography
         };
     }
 
-    std::array<std::uint8_t, SHA256::outputSize> SHA256::stateToDigest(
-            const std::array<std::uint32_t, stateSize>& state)
+    std::array<std::uint8_t, SHA256::_outputSize> SHA256::stateToDigest(
+            const std::array<std::uint32_t, _stateSize>& state)
     {
-        std::array<std::uint8_t, outputSize> digest;
+        std::array<std::uint8_t, _outputSize> digest;
         for (int i = 0; i < 8; ++i)
         {
             digest[i * 4    ] = static_cast<uint8_t>(state[i] >> 24);
@@ -103,7 +103,7 @@ namespace Xale::Cryptography
         return digest;
     }
 
-    std::string SHA256::toHex(const std::array<std::uint8_t, outputSize>& digest)
+    std::string SHA256::toHex(const std::array<std::uint8_t, _outputSize>& digest)
     {
         std::ostringstream oss;
         for (auto byte : digest)
@@ -111,7 +111,7 @@ namespace Xale::Cryptography
         return oss.str();
     }
 
-    std::array<std::uint8_t, SHA256::outputSize> SHA256::hash(
+    std::array<std::uint8_t, SHA256::_outputSize> SHA256::hash(
             const std::uint8_t* data,
             std::size_t len)
     {
@@ -144,7 +144,7 @@ namespace Xale::Cryptography
         return stateToDigest(state);
     }
 
-    std::array<std::uint8_t, SHA256::outputSize> SHA256::hash(const std::string& text)
+    std::array<std::uint8_t, SHA256::_outputSize> SHA256::hash(const std::string& text)
     {
         return hash(reinterpret_cast<const std::uint8_t*>(text.data()), text.size());
     }
@@ -161,7 +161,7 @@ namespace Xale::Cryptography
 
     constexpr std::size_t SHA256::hashSize()
     {
-        return outputSize;
+        return _outputSize;
     }
 }
 

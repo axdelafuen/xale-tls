@@ -4,7 +4,7 @@
 #include "Cryptography/SHA256.h"
 #include <string>
 
-#define DECLARE_SHA256_TEST(name) DECLARE_TEST(CRYPTO, sha256##name)
+#define DECLARE_SHA256_TEST(name) DECLARE_TEST(CRYPTO, sha256_##name)
 
 namespace Xale::Tests
 {

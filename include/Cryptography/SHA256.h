@@ -18,13 +18,13 @@ namespace Xale::Cryptography
              * Consts
              */
             // SHA-256 output size in bytes.
-            static constexpr std::size_t outputSize = 32;
+            static constexpr std::size_t _outputSize = 32;
             // SHA-256 internal block size in bytes.
             static constexpr std::size_t blockSize = 64;
             // SHA-256 state size in bytes.
-            static constexpr std::size_t stateSize = 8;
+            static constexpr std::size_t _stateSize = 8;
 	        // Prime numbers 'K', in hex format
-            static constexpr std::array<uint32_t, 64> K = {
+            static constexpr std::array<uint32_t, 64> _K = {
 		        0x428a2f98,0x71374491,0xb5c0fbcf,0xe9b5dba5,
 		        0x3956c25b,0x59f111f1,0x923f82a4,0xab1c5ed5,
 		        0xd807aa98,0x12835b01,0x243185be,0x550c7dc3,
@@ -48,24 +48,26 @@ namespace Xale::Cryptography
             ~SHA256() = default;
 
             // Hash methods
-            static std::array<std::uint8_t, outputSize> hash(const std::uint8_t* data, std::size_t len);
-            static std::array<std::uint8_t, outputSize> hash(const std::string& text);
+            static std::array<std::uint8_t, _outputSize> hash(const std::uint8_t* data, std::size_t len);
+            static std::array<std::uint8_t, _outputSize> hash(const std::string& text);
             static std::string hashToString(const std::uint8_t* data, std::size_t len);
             static std::string hashToString(const std::string& text); 
 
             // Info
             static constexpr std::size_t hashSize();
+
+            // Helpers
+            static std::string toHex(const std::array<std::uint8_t, _outputSize>& digest);
         
         private:
             // Core computing
-            static std::array<std::uint32_t, stateSize> process(
-                   const std::array<std::uint32_t, stateSize> state, 
+            static std::array<std::uint32_t, _stateSize> process(
+                   const std::array<std::uint32_t, _stateSize> state, 
                    const std::uint8_t block[blockSize]); 
             
             // Helpers
-            static std::array<std::uint32_t, stateSize> initialState();
-            static std::array<std::uint8_t, outputSize> stateToDigest(const std::array<std::uint32_t, stateSize>& state);
-            static std::string toHex(const std::array<std::uint8_t, outputSize>& digest);
+            static std::array<std::uint32_t, _stateSize> initialState();
+            static std::array<std::uint8_t, _outputSize> stateToDigest(const std::array<std::uint32_t, _stateSize>& state);
     };
 }
 
