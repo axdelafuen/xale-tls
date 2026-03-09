@@ -2,6 +2,7 @@
 
 #include <string>
 #include <iostream>
+#include <exception>
 
 // Include all test files here
 #include "Cryptography/SHA256Tests.h"
@@ -15,7 +16,7 @@ int main()
     using namespace Xale::Tests;
 
     auto& tests = TestRegistry::getTests();
-    const int total = tests.size();
+    const size_t total = tests.size();
     int failed = 0;
     int passed = 0;
 
