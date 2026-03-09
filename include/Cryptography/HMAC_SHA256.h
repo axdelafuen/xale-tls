@@ -20,8 +20,6 @@ namespace Xale::Cryptography
             static constexpr std::size_t _outputSize = 32;
             // HMAC-SHA256 internal block size in bytes.
             static constexpr std::size_t _blockSize = 64;
-            // HMAC-SHA256 state size in bytes.
-            static constexpr std::size_t _stateSize = 8;
             // HMAC-SHA256 ipad
 	        static constexpr std::uint8_t _ipad = 0x36;
             // HMAC-SHA256 opad
