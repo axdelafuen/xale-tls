@@ -8,6 +8,7 @@
 #include "Cryptography/SHA256Tests.h"
 #include "Cryptography/HMAC_SHA256Tests.h"
 #include "Cryptography/HKDFTests.h"
+#include "Cryptography/AES128Tests.h"
 // ---
 
 const std::string RED_COLOR = "\033[31m";

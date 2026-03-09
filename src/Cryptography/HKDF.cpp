@@ -67,5 +67,21 @@ namespace Xale::Cryptography
         return expand(prk.data(), prk.size(), info.data(), info.size(), length);
     }
 
+    std::string HKDF::expandToString(
+        const std::uint8_t* prk, std::size_t prkLen,
+        const std::uint8_t* info, std::size_t infoLen,
+        std::size_t length)
+    {
+        auto okm = expand(prk, prkLen, info, infoLen, length);
+        return SHA256::toHex(HMAC_SHA256::mac(prk, prkLen, okm.data(), okm.size()));
+    }
+
+    std::string HKDF::expandToString(
+        const std::vector<std::uint8_t>& prk,
+        const std::vector<std::uint8_t>& info,
+        std::size_t length)
+    {
+        return expandToString(prk.data(), prk.size(), info.data(), info.size(), length);
+    }
 }
 
