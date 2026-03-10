@@ -54,7 +54,7 @@ namespace Xale::Cryptography
             static std::string hashToString(const std::string& text); 
 
             // Info
-            static constexpr std::size_t hashSize();
+            static constexpr std::size_t hashSize() { return _outputSize; }
 
             // Helpers
             static std::string toHex(const std::array<std::uint8_t, _outputSize>& digest);

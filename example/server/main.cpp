@@ -3,6 +3,7 @@
 #include "Cryptography/HKDF.h"
 #include "Cryptography/AES128.h"
 #include "Cryptography/GCM_AES128.h"
+#include "Cryptography/SHA512.h"
 
 #include <string>
 #include <array>
@@ -22,6 +23,12 @@ int main()
     std::cout << "\n\nTesting SHA256 implementation..." << std::endl;
     std::string input = "abc";
     std::string output = Xale::Cryptography::SHA256::hashToString(input);
+
+    std::cout << output << std::endl;
+
+    std::cout << "\n\nTesting SHA512 implementation..." << std::endl;
+    input = "abc";
+    output = Xale::Cryptography::SHA512::hashToString(input);
 
     std::cout << output << std::endl;
 

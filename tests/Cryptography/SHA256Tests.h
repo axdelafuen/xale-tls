@@ -34,6 +34,12 @@ namespace Xale::Tests
 
         return expect != output;
     }
+
+    // hashSize() returns 32
+    DECLARE_SHA256_TEST(hash_size)
+    {
+        return Xale::Cryptography::SHA256::hashSize() == 32;
+    }
 }
 
 #endif // SHA256_TEST_H

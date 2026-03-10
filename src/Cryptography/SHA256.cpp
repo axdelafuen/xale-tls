@@ -158,10 +158,5 @@ namespace Xale::Cryptography
     {
         return toHex(hash(text));
     }
-
-    constexpr std::size_t SHA256::hashSize()
-    {
-        return _outputSize;
-    }
 }
 

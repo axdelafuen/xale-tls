@@ -10,6 +10,7 @@
 #include "Cryptography/HKDFTests.h"
 #include "Cryptography/AES128Tests.h"
 #include "Cryptography/GCM_AES128Tests.h"
+#include "Cryptography/SHA512Tests.h"
 // ---
 
 const std::string RED_COLOR = "\033[31m";
