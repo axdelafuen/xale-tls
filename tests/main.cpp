@@ -51,7 +51,7 @@ int main()
 
     // Tests results
     std::cout << "------------------------------------" << std::endl;
-    if (failed != 0 || passed + failed != total)
+    if (failed != 0 || passed + failed != (int)total)
     {
         std::cout << failed << " test(s) failed (" << passed << "/" << total << " passed)" << std::endl;
         return 1;

@@ -8,6 +8,7 @@
 #include <cstring>
 #include <iomanip>
 #include <sstream>
+#include <utility>
 
 namespace Xale::Cryptography
 {

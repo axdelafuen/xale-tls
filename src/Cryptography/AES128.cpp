@@ -194,7 +194,7 @@ namespace Xale::Cryptography
 
         addRoundKey(state, roundKeys.data() + _numRounds * _blockSize);
 
-        for (std::size_t round = _numRounds - 1; round >= 1; --round)
+        for (std::size_t round = _numRounds - 1; round > 0; --round)
         {
             invShiftRows(state);
             invSubBytes(state);
