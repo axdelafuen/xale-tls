@@ -2,8 +2,10 @@
 #include "Cryptography/HMAC_SHA256.h"
 #include "Cryptography/HKDF.h"
 #include "Cryptography/AES128.h"
+#include "Cryptography/GCM_AES128.h"
 
 #include <string>
+#include <array>
 #include <vector>
 #include <cstdint>
 #include <iostream>
@@ -69,6 +71,23 @@ int main()
     std::cout << "Ciphertext: " << toHex(aesCiphertext.data(), aesCiphertext.size()) << std::endl;
     auto aesDecrypted = Xale::Cryptography::AES128::decrypt(aesKey.data(), aesCiphertext.data());
     std::cout << "Decrypted:  " << toHex(aesDecrypted.data(), aesDecrypted.size()) << std::endl;
+
+    std::cout << "\n\nTesting GCM-AES128 implementation..." << std::endl;
+    std::array<std::uint8_t, 16> gcmKey = {
+        0x00,0x01,0x02,0x03,0x04,0x05,0x06,0x07,
+        0x08,0x09,0x0a,0x0b,0x0c,0x0d,0x0e,0x0f
+    };
+    std::vector<std::uint8_t> gcmIV = {
+        0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00
+    };
+    std::cout << "Key:       " << toHex(gcmKey.data(), gcmKey.size()) << std::endl;
+    std::cout << "Plaintext: " << toHex(aesPlaintext.data(), aesPlaintext.size()) << std::endl;
+    std::cout << "IV:        " << toHex(gcmIV.data(), gcmIV.size()) << std::endl;
+    std::vector<std::uint8_t> gcmAAD;
+    auto [gcmCiphertext, gcmTag] = Xale::Cryptography::GCM_AES128::encrypt(gcmKey, gcmIV, gcmAAD, aesPlaintext);
+
+    std::cout << "Ciphertext: " << toHex(gcmCiphertext.data(), gcmCiphertext.size()) << std::endl;
+    std::cout << "Tag:        " << toHex(gcmTag.data(), gcmTag.size()) << std::endl;
 
     return 0;
 }
