@@ -2,6 +2,7 @@
 #define CRYPTOGRAPHY_HKDF_H
 
 #include "Cryptography/HMAC_SHA256.h"
+#include "Cryptography/SHA256.h"
 
 #include <array>
 #include <vector>
@@ -55,6 +56,17 @@ namespace Xale::Cryptography
                 std::size_t length);
 
             static std::vector<std::uint8_t> expand(
+                const std::vector<std::uint8_t>& prk,
+                const std::vector<std::uint8_t>& info,
+                std::size_t length);
+
+            static std::string expandToString(
+                const std::uint8_t* prk, std::size_t prkLen,
+                const std::uint8_t* info, std::size_t infoLen,
+                std::size_t length);
+
+
+            static std::string expandToString(
                 const std::vector<std::uint8_t>& prk,
                 const std::vector<std::uint8_t>& info,
                 std::size_t length);

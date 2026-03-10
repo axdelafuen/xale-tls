@@ -8,6 +8,7 @@
 #include "Cryptography/SHA256Tests.h"
 #include "Cryptography/HMAC_SHA256Tests.h"
 #include "Cryptography/HKDFTests.h"
+#include "Cryptography/AES128Tests.h"
 // ---
 
 const std::string RED_COLOR = "\033[31m";
@@ -50,7 +51,7 @@ int main()
 
     // Tests results
     std::cout << "------------------------------------" << std::endl;
-    if (failed != 0 || passed + failed != total)
+    if (failed != 0 || passed + failed != (int)total)
     {
         std::cout << failed << " test(s) failed (" << passed << "/" << total << " passed)" << std::endl;
         return 1;

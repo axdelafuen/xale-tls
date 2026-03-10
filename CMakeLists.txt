@@ -41,5 +41,7 @@ if(UNIX)
     target_compile_options(xale-tls-core PRIVATE -Wall -Wextra)
     target_compile_options(xale-tls-server PRIVATE -Wall -Wextra)
     target_compile_options(xale-tls-client PRIVATE -Wall -Wextra)
+    target_compile_options(xale-tls-tests PRIVATE -Wall -Wextra)
+
 endif()
 
