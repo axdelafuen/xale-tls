@@ -10,13 +10,7 @@
 
 namespace Xale::Tests
 {
-    // =========================================================================
     // NIST FIPS 197 Appendix B - AES-128 Encrypt
-    // =========================================================================
-
-    // Key: 2b7e151628aed2a6abf7158809cf4f3c
-    // Plaintext:  3243f6a8885a308d313198a2e0370734
-    // Ciphertext: 3925841d02dc09fbdc118597196a0b32
     DECLARE_AES128_TEST(fips197_appb_encrypt)
     {
         auto key  = hexToBytes("2b7e151628aed2a6abf7158809cf4f3c");
@@ -37,13 +31,7 @@ namespace Xale::Tests
         return bytesToHex(pt.data(), pt.size()) == expect;
     }
 
-    // =========================================================================
     // NIST FIPS 197 Appendix C.1 - AES-128
-    // =========================================================================
-
-    // Key: 000102030405060708090a0b0c0d0e0f
-    // Plaintext:  00112233445566778899aabbccddeeff
-    // Ciphertext: 69c4e0d86a7b0430d8cdb78070b4c55a
     DECLARE_AES128_TEST(fips197_appc1_encrypt)
     {
         auto key  = hexToBytes("000102030405060708090a0b0c0d0e0f");
@@ -64,10 +52,7 @@ namespace Xale::Tests
         return bytesToHex(pt.data(), pt.size()) == expect;
     }
 
-    // =========================================================================
     // Roundtrip: encrypt then decrypt must return the original plaintext
-    // =========================================================================
-
     DECLARE_AES128_TEST(roundtrip)
     {
         auto key = hexToBytes("2b7e151628aed2a6abf7158809cf4f3c");
@@ -79,10 +64,7 @@ namespace Xale::Tests
         return bytesToHex(out.data(), out.size()) == bytesToHex(pt.data(), pt.size());
     }
 
-    // =========================================================================
     // Zero key / zero block
-    // =========================================================================
-
     DECLARE_AES128_TEST(zero_key_zero_block_encrypt)
     {
         auto key = hexToBytes("00000000000000000000000000000000");
@@ -103,10 +85,7 @@ namespace Xale::Tests
         return bytesToHex(pt.data(), pt.size()) == expect;
     }
 
-    // =========================================================================
     // std::array overload
-    // =========================================================================
-
     DECLARE_AES128_TEST(array_overload_roundtrip)
     {
         std::array<std::uint8_t, 16> key = {
