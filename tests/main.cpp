@@ -11,6 +11,7 @@
 #include "Cryptography/AES128Tests.h"
 #include "Cryptography/GCM_AES128Tests.h"
 #include "Cryptography/SHA512Tests.h"
+#include "Cryptography/Curve25519Tests.h"
 // ---
 
 const std::string RED_COLOR = "\033[31m";
