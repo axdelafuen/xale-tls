@@ -1,3 +1,5 @@
+**/!\ This project is abandoned. Its use is strongly discouraged. It was created for educational purposes only.**
+
 # xale-tls
 
 This repo is part of the [xale-db](https://github.com/axdelafuen/xale-db) project.
